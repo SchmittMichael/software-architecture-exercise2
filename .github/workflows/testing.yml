@@ -1,0 +1,28 @@
+name: Python test runner
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pytest
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+          cache: pip
+      
+      - name: Append pytest to requirements
+        run: echo "pytest" >> requirements.txt
+
+      - name: Install requirements
+        run: pip3 install -r requirements.txt
+
+      - name: Run pytest
+        run: pytest test
