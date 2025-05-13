@@ -1,4 +1,4 @@
-name: Python test runner
+name: CI pipeline
 
 on:
   push:
@@ -6,6 +6,28 @@ on:
       - main
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pytest
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+          cache: pip
+
+      - name: Append pylint to dependencies
+        run: echo "pylint" >> requirements.txt
+
+      - name: Install requirements
+        run: pip3 install -r requirements.txt
+
+      - name: Run pytest
+        run: pylint flaskr
+
+
   pytest:
     runs-on: ubuntu-latest
     steps:
